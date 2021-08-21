@@ -53,6 +53,7 @@ public class BaseClassTest{
      * Class
      */
     public static void testClass(){
+        //Class
         System.out.println("testClass:"+BaseClassTest.class.getName());
     }
 
