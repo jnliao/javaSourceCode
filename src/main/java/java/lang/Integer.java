@@ -777,6 +777,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * sun.misc.VM class.
      */
 
+    // Integer缓存类（IntegerCache）在第一次被使用时初始化。
+    // 默认缓存的值为[-128, 127]之间的对象，其中最大值可以通过参数 -XX:AutoBoxCacheMax=<size> 设置。
     private static class IntegerCache {
         static final int low = -128;
         static final int high;
@@ -826,6 +828,8 @@ public final class Integer extends Number implements Comparable<Integer> {
      * @return an {@code Integer} instance representing {@code i}.
      * @since  1.5
      */
+    // Integer.valueOf(int i)， 通过该方法获取Integer对象时，IntegerCache.high没自定义时，
+    // 值为[-128, 127]之间的对象会从缓存中获取，而不会重新创建新对象。
     public static Integer valueOf(int i) {
         if (i >= IntegerCache.low && i <= IntegerCache.high)
             return IntegerCache.cache[i + (-IntegerCache.low)];
@@ -970,6 +974,7 @@ public final class Integer extends Number implements Comparable<Integer> {
      * @return  {@code true} if the objects are the same;
      *          {@code false} otherwise.
      */
+    // 包装类转成基本数据类型后，比较对象的值是否相同
     public boolean equals(Object obj) {
         if (obj instanceof Integer) {
             return value == ((Integer)obj).intValue();

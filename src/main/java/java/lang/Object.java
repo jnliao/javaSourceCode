@@ -145,6 +145,7 @@ public class Object {
      * @see     #hashCode()
      * @see     java.util.HashMap
      */
+    // 比较的是两个对象在内存中的首地址
     public boolean equals(Object obj) {
         return (this == obj);
     }
