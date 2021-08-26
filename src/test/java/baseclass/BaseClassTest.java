@@ -1,7 +1,9 @@
 package baseclass;
 
 import com.sun.org.apache.bcel.internal.generic.ALOAD;
+import model.Student;
 
+import java.lang.reflect.*;
 import java.util.Objects;
 
 /**
@@ -9,9 +11,11 @@ import java.util.Objects;
  */
 public class BaseClassTest{
 
-    public static void main(String[] args){
-        testInteger();
+    public static void main(String[] args) throws Exception {
+        //testInteger();
         //testClass();
+        testClass3();
+
     }
 
     /**
@@ -52,9 +56,62 @@ public class BaseClassTest{
     /**
      * Class
      */
-    public static void testClass(){
-        //Class
-        System.out.println("testClass:"+BaseClassTest.class.getName());
+    public static void testClass() throws Exception {
+        Class<BaseClassTest> aClass1 = BaseClassTest.class;
+        Class<? extends BaseClassTest> aClass2 = new BaseClassTest().getClass();
+        Class<?> aClass3 = Class.forName("baseclass.BaseClassTest");
+
+        System.out.println("testClass:"+ aClass1.getName());
+
+        Method testClass = BaseClassTest.class.getMethod("testClass");
+        testClass.invoke(null);
+
+        Constructor<BaseClassTest> constructor = BaseClassTest.class.getConstructor();
+        BaseClassTest baseClassTest = constructor.newInstance();
+
+        BaseClassTest baseClassTest1 = BaseClassTest.class.newInstance();
+    }
+
+    public static void testClass2() {
+
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                System.out.println(method);
+                if (method.getName().equals("morning")) {
+                    System.out.println("Good morning, " + args[0]);
+                }
+                return null;
+            }
+        };
+
+        Hello hello = (Hello) Proxy.newProxyInstance(
+                Hello.class.getClassLoader(), // 传入ClassLoader
+                new Class[] { Hello.class }, // 传入要实现的接口
+                handler); // 传入处理调用方法的InvocationHandler
+
+        hello.morning("Bob");
+    }
+
+    interface Hello {
+        void morning(String name);
+    }
+
+    public static void testClass3() throws Exception {
+        Student student = new Student();
+
+        Class<? extends Student> aClass = student.getClass();
+        Field nameField = aClass.getDeclaredField("name");
+        nameField.setAccessible(true);
+
+        String name = (String) nameField.get(student);
+        System.out.println(name);
+
+        nameField.set(student,"mark");
+
+        String name2 = (String) nameField.get(student);
+        System.out.println(name2);
+
     }
 
 
