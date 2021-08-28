@@ -1,6 +1,5 @@
 package baseclass;
 
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
 import model.Student;
 
 import java.lang.reflect.*;
@@ -14,7 +13,8 @@ public class BaseClassTest{
     public static void main(String[] args) throws Exception {
         //testInteger();
         //testClass();
-        testClass3();
+        //testClass3();
+        testMethod();
 
     }
 
@@ -112,6 +112,32 @@ public class BaseClassTest{
         String name2 = (String) nameField.get(student);
         System.out.println(name2);
 
+    }
+
+
+    public static void testMethod() throws Exception {
+        Class<BaseClassTest> baseClassTestClass = BaseClassTest.class;
+        Method testMethod = baseClassTestClass.getMethod("testMethod2",String.class,Integer.class);
+
+        testMethod.invoke(BaseClassTest.class.newInstance(),"jack",18);
+        System.out.println(testMethod.getName());
+
+        Method testMethod2 = baseClassTestClass.getMethod("testMethod2");
+        testMethod2.invoke(BaseClassTest.class.newInstance());
+
+        Method[] methods = baseClassTestClass.getMethods();
+    }
+
+    public static void testMethod2(){
+        System.out.println("null");
+    }
+
+    public static void testMethod2(String name){
+        System.out.println(name);
+    }
+
+    public static void testMethod2(String name,Integer age){
+        System.out.println(name+"-"+age);
     }
 
 

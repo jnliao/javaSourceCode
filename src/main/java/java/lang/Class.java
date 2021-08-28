@@ -1760,7 +1760,7 @@ public final class Class<T> implements java.io.Serializable,
      * the class or interface.
      *
      * @param name the name of the method
-     * @param parameterTypes the list of parameters
+     * @param parameterTypes the list of parameters  指定方法的参数类型
      * @return the {@code Method} object that matches the specified
      *         {@code name} and {@code parameterTypes}
      * @throws NoSuchMethodException if a matching method is not found

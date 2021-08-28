@@ -485,12 +485,18 @@ public final class Method extends Executable {
         throws IllegalAccessException, IllegalArgumentException,
            InvocationTargetException
     {
+        // 1、访问控制检查
+        // 通过setAccessible(boolean flag)可设置override值，以此来决定是否需要进行Java语言的准入检查
         if (!override) {
+            // 判断类的访问修饰符（public-1）和方法的修饰符（public-1）是否都为 public ，如果是则跳过以下校验
             if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {
                 Class<?> caller = Reflection.getCallerClass();
+                // 判断调用者caller是否有权限访问该方法
                 checkAccess(caller, clazz, obj, modifiers);
             }
         }
+
+        // 2、获取方法访问器，并调用方法访问器的invoke方法（sun.reflect.MethodAccessor.invoke）
         MethodAccessor ma = methodAccessor;             // read volatile
         if (ma == null) {
             ma = acquireMethodAccessor();
@@ -560,7 +566,10 @@ public final class Method extends Executable {
         if (tmp != null) {
             methodAccessor = tmp;
         } else {
-            // Otherwise fabricate one and propagate it up to the root
+            // 通过反射工厂创建方法访问器 MethodAccessor 并递归地赋值给 root（Method）
+            // 创建 DelegatingMethodAccessorImpl，DelegatingMethodAccessorImpl 委托 NativeMethodAccessorImpl
+            // 执行 invoke 方法
+            // Otherwise fabricate（制作，创建） one and propagate it up to the root
             tmp = reflectionFactory.newMethodAccessor(this);
             setMethodAccessor(tmp);
         }
