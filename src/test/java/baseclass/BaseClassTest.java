@@ -31,8 +31,8 @@ public class BaseClassTest{
         //testClass();
         //testClass3();
         //testMethod();
-        testConstructor();
-
+        //testConstructor();
+        testProxy();
     }
 
     /**
@@ -87,31 +87,6 @@ public class BaseClassTest{
         BaseClassTest baseClassTest = constructor.newInstance();
 
         BaseClassTest baseClassTest1 = BaseClassTest.class.newInstance();
-    }
-
-    public static void testClass2() {
-
-        InvocationHandler handler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                System.out.println(method);
-                if (method.getName().equals("morning")) {
-                    System.out.println("Good morning, " + args[0]);
-                }
-                return null;
-            }
-        };
-
-        Hello hello = (Hello) Proxy.newProxyInstance(
-                Hello.class.getClassLoader(), // 传入ClassLoader
-                new Class[] { Hello.class }, // 传入要实现的接口
-                handler); // 传入处理调用方法的InvocationHandler
-
-        hello.morning("Bob");
-    }
-
-    interface Hello {
-        void morning(String name);
     }
 
     public static void testClass3() throws Exception {
@@ -179,5 +154,53 @@ public class BaseClassTest{
         constructor2.setAccessible(true);
         BaseClassTest baseClass = constructor2.newInstance("BaseClass");
         System.out.println(baseClass.toString());
+    }
+
+    public static void testProxy() {
+        // 调用处理类实现 InvocationHandler 接口，重写 invoke 方法，在invoke方法中实现接口的方法
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if (method.getName().equals("morning")) {
+                    System.out.println("Good morning, " + args[0]);
+                }
+                return null;
+            }
+        };
+
+        IHello helloProxyInstance = (IHello) Proxy.newProxyInstance(
+                IHello.class.getClassLoader(), // 类加载器ClassLoader
+                new Class[] { IHello.class }, // 要实现的接口（interface）
+                handler); // 处理调用方法的调用处理类InvocationHandler
+
+        helloProxyInstance.morning("Bob");
+
+        // 代理类名称 - baseclass.$Proxy0
+        Class<? extends IHello> aClass = helloProxyInstance.getClass();
+        System.out.println(aClass.getName());
+        // 代理类实现的接口 - baseclass.BaseClassTest$Hello
+        for (Class<?> anInterface : aClass.getInterfaces()) {
+            System.out.println(anInterface.getName());
+        }
+        // 代理类继承的类 - java.lang.reflect.Proxy
+        System.out.println(aClass.getSuperclass().getName());
+
+        // 只能代理接口，不能代理类。因为代理类本身已经extends了Proxy，而java是不允许多重继承的
+        HelloService helloServiceProxyInstance = (HelloService) Proxy.newProxyInstance(
+                HelloService.class.getClassLoader(),
+                new Class[] { HelloService.class },
+                handler);
+
+        helloServiceProxyInstance.morning("Bob");
+    }
+
+    interface IHello {
+        void morning(String name);
+    }
+
+    class HelloService {
+        public void morning(String name){
+            System.out.println("hello2");
+        }
     }
 }

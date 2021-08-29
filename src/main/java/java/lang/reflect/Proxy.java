@@ -716,14 +716,12 @@ public class Proxy implements java.io.Serializable {
         /*
          * Look up or generate the designated proxy class.
          */
-        // 查找或生成指定的代理类
-        Class<?> cl = getProxyClass0(loader, intfs);
+        Class<?> cl = getProxyClass0(loader, intfs); // 使用反射机制，生成(或查找)指定接口的代理类（Class）
 
         /*
          * Invoke its constructor with the designated invocation handler.
          */
-        // 获取构造函数，然后指定调用处理器(InvocationHandler)，通过构造器生成代理类的实例
-        try {
+        try { // 获取类的构造函数类（Constructor），通过构造函数类生成代理类的实例（指定方法调用处理器）（cons.newInstance()）
             if (sm != null) {
                 checkNewProxyPermission(Reflection.getCallerClass(), cl);
             }
