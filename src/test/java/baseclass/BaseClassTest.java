@@ -3,18 +3,35 @@ package baseclass;
 import model.Student;
 
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * @author jinneng.liao
  */
 public class BaseClassTest{
+    private String name;
+
+    public BaseClassTest() {
+    }
+
+    public BaseClassTest(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseClassTest{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     public static void main(String[] args) throws Exception {
         //testInteger();
         //testClass();
         //testClass3();
-        testMethod();
+        //testMethod();
+        testConstructor();
 
     }
 
@@ -140,5 +157,27 @@ public class BaseClassTest{
         System.out.println(name+"-"+age);
     }
 
+    public static void testConstructor() throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
+        // 获取构造器类
+        Class<BaseClassTest> baseClassTestClass = BaseClassTest.class;
+        Constructor<?>[] declaredConstructors = baseClassTestClass.getDeclaredConstructors();
+        Constructor<?>[] constructors = baseClassTestClass.getConstructors();
+        Constructor<BaseClassTest> constructor = baseClassTestClass.getConstructor(String.class);
+        Constructor<BaseClassTest> constructor2 = baseClassTestClass.getDeclaredConstructor(String.class);
 
+        // 获取该构造器的参数列表和类型
+        Class<?>[] parameterTypes = constructor2.getParameterTypes();
+        Parameter[] parameters = constructor2.getParameters();
+        System.out.println(Arrays.toString(parameters));
+        System.out.println(Arrays.toString(parameterTypes));
+
+        Class<BaseClassTest> declaringClass = constructor.getDeclaringClass();
+        System.out.println(declaringClass.getName());
+
+        // 生成一个构造器的声明类的对象实例
+        constructor2.setAccessible(true);
+        BaseClassTest baseClass = constructor2.newInstance("BaseClass");
+        System.out.println(baseClass.toString());
+    }
 }

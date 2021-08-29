@@ -486,7 +486,7 @@ public final class Method extends Executable {
            InvocationTargetException
     {
         // 1、访问控制检查
-        // 通过setAccessible(boolean flag)可设置override值，以此来决定是否需要进行Java语言的准入检查
+        // 通过setAccessible(boolean flag)可设置override值，以此来决定是否需要进行Java语言的访问控制权限校验
         if (!override) {
             // 判断类的访问修饰符（public-1）和方法的修饰符（public-1）是否都为 public ，如果是则跳过以下校验
             if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {

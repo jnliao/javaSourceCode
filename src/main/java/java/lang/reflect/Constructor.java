@@ -407,12 +407,18 @@ public final class Constructor<T> extends Executable {
         throws InstantiationException, IllegalAccessException,
                IllegalArgumentException, InvocationTargetException
     {
+        // 1、检查调用者是否有权限访问此方法
+        // 可通过设置 constructor.setAccessible(true) -> override=true 跳过此检查
         if (!override) {
             if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {
-                Class<?> caller = Reflection.getCallerClass();
+                Class<?> caller = Reflection.getCallerClass(); //获取调用类
                 checkAccess(caller, clazz, null, modifiers);
             }
         }
+
+        // 2、获取构造器访问类（ConstructorAccessor）、执行newInstance()方法创建对象。
+        // 使用委托模式，DelegatingConstructorAccessorImpl先后委托NativeConstructorAccessorImpl
+        // 和代理类（由methodAccessorGenerator.generateConstructor()生成）执行newInstance()方法
         if ((clazz.getModifiers() & Modifier.ENUM) != 0)
             throw new IllegalArgumentException("Cannot reflectively create enum objects");
         ConstructorAccessor ca = constructorAccessor;   // read volatile
