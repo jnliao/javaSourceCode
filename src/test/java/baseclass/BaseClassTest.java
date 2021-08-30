@@ -157,7 +157,7 @@ public class BaseClassTest{
     }
 
     public static void testProxy() {
-        // 调用处理类实现 InvocationHandler 接口，重写 invoke 方法，在invoke方法中实现接口的方法
+        // 调用处理类实现 InvocationHandler 接口，重写 invoke 方法，在invoke方法中重写接口的方法(或对原方法进行增强)
         InvocationHandler handler = new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -168,10 +168,11 @@ public class BaseClassTest{
             }
         };
 
+        // 1、为接口生成代理类
         IHello helloProxyInstance = (IHello) Proxy.newProxyInstance(
-                IHello.class.getClassLoader(), // 类加载器ClassLoader
-                new Class[] { IHello.class }, // 要实现的接口（interface）
-                handler); // 处理调用方法的调用处理类InvocationHandler
+                IHello.class.getClassLoader(), // 用于定义代理类的类加载器
+                new Class[]{IHello.class}, // 代理类要实现的接口（interface）
+                handler); // 方法的调用处理类
 
         helloProxyInstance.morning("Bob");
 
@@ -185,13 +186,13 @@ public class BaseClassTest{
         // 代理类继承的类 - java.lang.reflect.Proxy
         System.out.println(aClass.getSuperclass().getName());
 
-        // 只能代理接口，不能代理类。因为代理类本身已经extends了Proxy，而java是不允许多重继承的
+        // 2、只能代理接口，不能代理类。因为代理类本身已经extends了Proxy，而java是不允许多重继承的
         HelloService helloServiceProxyInstance = (HelloService) Proxy.newProxyInstance(
                 HelloService.class.getClassLoader(),
                 new Class[] { HelloService.class },
                 handler);
 
-        helloServiceProxyInstance.morning("Bob");
+        helloServiceProxyInstance.morning("Bob"); // 报错
     }
 
     interface IHello {
