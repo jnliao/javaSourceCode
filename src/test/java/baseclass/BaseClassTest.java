@@ -1,5 +1,7 @@
 package baseclass;
 
+import model.HelloService;
+import model.IHello;
 import model.Student;
 
 import java.lang.reflect.*;
@@ -193,15 +195,5 @@ public class BaseClassTest{
                 handler);
 
         helloServiceProxyInstance.morning("Bob"); // 报错
-    }
-
-    interface IHello {
-        void morning(String name);
-    }
-
-    class HelloService {
-        public void morning(String name){
-            System.out.println("hello2");
-        }
     }
 }

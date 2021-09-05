@@ -1,5 +1,8 @@
 package baseclass;
 
+import model.HelloService;
+import model.IHello;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,7 +10,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * @author jinneng.liao
- * JDK动态代理
+ * JDK 动态代理
  */
 public class JdkProxy {
 
@@ -16,20 +19,23 @@ public class JdkProxy {
     }
 
     public static void testProxy() {
-        // 生成接口（IHello）的代理类-重写接口的方法
-        IHello proxyInstance = (IHello) new HelloProxy().getProxyInstance();
-        proxyInstance.morning("jack");
+        // 1、生成接口（IHello）的代理类-重写接口的方法
+        IHello helloProxyInstance = (IHello) new HelloProxy().getProxyInstance();
+        helloProxyInstance.morning("jack");
 
         System.out.println("====================");
 
-        // 生成目标类（HelloService）实现的接口（IHello）的代理类-重写并增强目标类的方法
-        HelloProxyAdvance helloProxyAdvance = new HelloProxyAdvance();
-        helloProxyAdvance.setTarget(new HelloService());
-        IHello proxyInstanceAdvance = (IHello) helloProxyAdvance.getProxyInstance();
-        proxyInstanceAdvance.morning("jack");
+        // 2、生成目标类（HelloService）实现的接口（IHello）的代理类-重写并增强目标类的方法
+        MethodProxyAdvance methodProxyAdvance = new MethodProxyAdvance();
+        methodProxyAdvance.setTarget(new HelloService());
+        IHello helloServiceProxyInstance = (IHello) methodProxyAdvance.getProxyInstance();
+        helloServiceProxyInstance.morning("jack");
 
     }
 
+    /**
+     * 代理类实现目标接口的方法
+     */
     public static class HelloProxy {
         // 方法调用处理类实现 InvocationHandler 接口，重写 invoke 方法，
         // 在invoke方法中重写接口的方法(或对原方法进行增强)
@@ -49,7 +55,10 @@ public class JdkProxy {
         }
     }
 
-    public static class HelloProxyAdvance {
+    /**
+     * 代理类对目标类的方法进行增强
+     */
+    public static class MethodProxyAdvance {
         // 需要被代理的目标类
         private Object target;
 
@@ -62,11 +71,11 @@ public class JdkProxy {
         InvocationHandler handler = new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
-                System.out.println("Good morning start");
+                System.out.println("Method start");
 
                 method.invoke(target, args);
 
-                System.out.println("Good morning end");
+                System.out.println("Method end");
                 return null;
             }
         };
@@ -76,17 +85,6 @@ public class JdkProxy {
                     target.getClass().getClassLoader(), // 用于定义代理类的类加载器
                     target.getClass().getInterfaces(), // 代理类要实现的接口（interface）
                     handler); // 方法的调用处理类
-        }
-    }
-
-
-    interface IHello {
-        void morning(String name);
-    }
-
-    static class HelloService implements IHello {
-        public void morning(String name) {
-            System.out.println("Good morning, " + name);
         }
     }
 
