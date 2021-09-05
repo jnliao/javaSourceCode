@@ -20,8 +20,8 @@ public class CglibProxy {
 
     public static void testProxy() {
         // 不能对接口进行代理
-//        IHello helloProxyInstance = (IHello) CustomCglibProxy.createAddLogCglibProxy(IHello.class);
-//        helloProxyInstance.morning("jack");
+//        IHello proxyInstance = (IHello) new CustomCglibProxyFactory(IHello.class, new AddLogMethodInterceptor()).createProxyInstance();
+//        proxyInstance.morning("jack");
 
         System.out.println("====================");
 
