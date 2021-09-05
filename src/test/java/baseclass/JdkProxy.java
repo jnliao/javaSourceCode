@@ -4,7 +4,6 @@ import model.HelloService;
 import model.IHello;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -26,11 +25,10 @@ public class JdkProxy {
         System.out.println("====================");
 
         // 2、生成目标类（HelloService）实现的接口（IHello）的代理类-重写并增强目标类的方法
-        MethodProxyAdvance methodProxyAdvance = new MethodProxyAdvance();
-        methodProxyAdvance.setTarget(new HelloService());
-        IHello helloServiceProxyInstance = (IHello) methodProxyAdvance.getProxyInstance();
-        helloServiceProxyInstance.morning("jack");
-
+        Class<HelloService> clazz = HelloService.class;
+        IHello proxyInstance =
+                (IHello) new CustomJdkProxyFactory(clazz, new AddLogInvocationHandler(clazz)).createProxyInstance();
+        proxyInstance.morning("Lily");
     }
 
     /**
@@ -56,35 +54,47 @@ public class JdkProxy {
     }
 
     /**
-     * 代理类对目标类的方法进行增强
+     * 自定义的jdk代理类工厂
+     * (代理类对目标类的方法进行增强)
      */
-    public static class MethodProxyAdvance {
-        // 需要被代理的目标类
-        private Object target;
+    public static class CustomJdkProxyFactory {
+        // 被代理的目标类class
+        private Class<?> clazz;
+        // 方法的调用处理类
+        private InvocationHandler handler;
 
-        public void setTarget(Object target) {
-            this.target = target;
+        public CustomJdkProxyFactory(Class<?> clazz, InvocationHandler handler) {
+            this.clazz = clazz;
+            this.handler = handler;
         }
 
-        // 方法调用处理类实现 InvocationHandler 接口，重写 invoke 方法，
-        // 在invoke方法中重写接口的方法，对原方法进行增强
-        InvocationHandler handler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
-                System.out.println("Method start");
-
-                method.invoke(target, args);
-
-                System.out.println("Method end");
-                return null;
-            }
-        };
-
-        public Object getProxyInstance() {
+        public Object createProxyInstance() {
             return Proxy.newProxyInstance(
-                    target.getClass().getClassLoader(), // 用于定义代理类的类加载器
-                    target.getClass().getInterfaces(), // 代理类要实现的接口（interface）
+                    clazz.getClassLoader(), // 用于定义代理类的类加载器
+                    clazz.getInterfaces(), // 代理类要实现的接口（interface）
                     handler); // 方法的调用处理类
+        }
+    }
+
+    /**
+     * 对原方法增加方法执行前后日志的JDK方法调用类
+     */
+    public static class AddLogInvocationHandler implements InvocationHandler {
+        // 需要被代理的目标类
+        private Class<?> clazz;
+
+        public AddLogInvocationHandler(Class<?> clazz) {
+            this.clazz = clazz;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            System.out.println("Method start");
+
+            method.invoke(clazz.newInstance(), args);
+
+            System.out.println("Method end");
+            return null;
         }
     }
 
