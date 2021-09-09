@@ -29,6 +29,15 @@ public class CglibProxy {
         HelloService helloServiceInstance =
                 (HelloService) new CustomCglibProxyFactory(HelloService.class,new AddLogMethodInterceptor()).createProxyInstance();
         helloServiceInstance.morning("jack");
+
+        System.out.println("====================");
+
+        // 继承代理类
+//        System.out.println(helloServiceInstance.getClass().getSuperclass());
+//        for (Class<?> anInterface : helloServiceInstance.getClass().getInterfaces()) {
+//            // 实现 net.sf.cglib.proxy.Factory
+//            System.out.println(anInterface.getName());
+//        }
     }
 
 
@@ -50,6 +59,7 @@ public class CglibProxy {
             Enhancer enhancer = new Enhancer();
             enhancer.setSuperclass(clazz);
             enhancer.setCallback(methodInterceptor);
+            enhancer.setUseCache(true);//默认为true,缓存代理类；如果不缓存，则每次将生成新的代理类，可能导致oom
             return enhancer.create();
         }
 
@@ -59,13 +69,25 @@ public class CglibProxy {
      * 对原方法增加方法执行前后日志的cglib方法拦截器
      */
     public static class AddLogMethodInterceptor implements MethodInterceptor {
+
+        /**
+         * @param o cglib代理类
+         * @param method 拦截的方法(被代理类的方法)
+         * @param objects 方法的入参(被代理类的方法的入参)
+         * @param methodProxy cglib代理类的方法
+         * @return
+         * @throws Throwable
+         */
         @Override
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            System.out.println(method.getName()+" start");
+            String proxyClassName = o.getClass().getName();
+            String methodName = method.getName();
+
+            System.out.println("proxyClassName:["+ proxyClassName +"], methodName:["+ methodName +"], start");
 
             methodProxy.invokeSuper(o, objects);
 
-            System.out.println(method.getName()+" end");
+            System.out.println("proxyClassName:["+ proxyClassName +"], methodName:["+ methodName +"], end");
 
             return null;
         }

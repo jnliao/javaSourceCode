@@ -80,20 +80,30 @@ public class JdkProxy {
      * 对原方法增加方法执行前后日志的JDK方法调用类
      */
     public static class AddLogInvocationHandler implements InvocationHandler {
-        // 需要被代理的目标类
+        // 被代理的目标类
         private Class<?> clazz;
 
         public AddLogInvocationHandler(Class<?> clazz) {
             this.clazz = clazz;
         }
 
+        /**
+         * @param proxy 代理类
+         * @param method  被代理类的方法
+         * @param args 被代理类的方法入参
+         */
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            System.out.println("Method start");
+            String proxyClassName = proxy.getClass().getName();
+            String methodName = method.getName();
+
+            System.out.println("originClassName:["+clazz.getName()+"], proxyClassName:["+ proxyClassName +"], " +
+                    "methodName:["+ methodName +"], start");
 
             method.invoke(clazz.newInstance(), args);
 
-            System.out.println("Method end");
+            System.out.println("originClassName:["+clazz.getName()+"], proxyClassName:["+ proxyClassName +"], " +
+                    "methodName:["+ methodName +"], end");
             return null;
         }
     }
