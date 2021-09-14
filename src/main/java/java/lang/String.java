@@ -111,7 +111,7 @@ import java.util.regex.PatternSyntaxException;
 public final class String
     implements java.io.Serializable, Comparable<String>, CharSequence {
     /** The value is used for character storage. */
-    private final char value[];
+    private final char value[]; // 数据结构为char数组
 
     /** Cache the hash code for the string */
     private int hash; // Default to 0
@@ -974,10 +974,10 @@ public final class String
      * @see  #equalsIgnoreCase(String)
      */
     public boolean equals(Object anObject) {
-        if (this == anObject) {
+        if (this == anObject) { // 比较对象在内存中的首地址
             return true;
         }
-        if (anObject instanceof String) {
+        if (anObject instanceof String) { // 比较char数组长度和其中的每个值
             String anotherString = (String)anObject;
             int n = value.length;
             if (n == anotherString.value.length) {
@@ -1387,7 +1387,7 @@ public final class String
      * specified index starts with the specified prefix.
      *
      * @param   prefix    the prefix.
-     * @param   toffset   where to begin looking in this string.
+     * @param   toffset   where to begin looking in this string.  指定比较的开始位置
      * @return  {@code true} if the character sequence represented by the
      *          argument is a prefix of the substring of this object starting
      *          at index {@code toffset}; {@code false} otherwise.

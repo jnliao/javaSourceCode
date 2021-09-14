@@ -34,7 +34,8 @@ public class BaseClassTest{
         //testClass3();
         //testMethod();
         //testConstructor();
-        testProxy();
+        //testProxy();
+        testString();
     }
 
     /**
@@ -195,5 +196,33 @@ public class BaseClassTest{
                 handler);
 
         helloServiceProxyInstance.morning("Bob"); // 报错
+    }
+
+    public static void testString(){
+        String str = "aa";
+        int i = str.hashCode();
+
+        char[] chars = new char[]{'a','b','c'};
+        String abc = new String(chars);
+        System.out.println(abc);
+        System.out.println(abc.hashCode());
+
+        String a="abc";
+        String b="abc";
+        String c="fbc";
+        int d = 1;
+
+        System.out.println(a.equals(a));
+        System.out.println(a.equals(b));
+        System.out.println(a.equals(c));
+        System.out.println(a.equals(d));
+
+        String a2= new String("abc");
+        System.out.println(a.equals(a2));
+
+        System.out.println(a.startsWith("a",0));
+        System.out.println(a.startsWith("a",1));
+
+
     }
 }
