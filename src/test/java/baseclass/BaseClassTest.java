@@ -4,6 +4,7 @@ import model.HelloService;
 import model.IHello;
 import model.Student;
 
+import javax.xml.transform.Source;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Objects;
@@ -198,9 +199,10 @@ public class BaseClassTest{
         helloServiceProxyInstance.morning("Bob"); // 报错
     }
 
-    public static void testString(){
+    public static void testString() throws NoSuchFieldException, IllegalAccessException {
         String str = "aa";
         int i = str.hashCode();
+        int i2 = str.hashCode();
 
         char[] chars = new char[]{'a','b','c'};
         String abc = new String(chars);
@@ -223,6 +225,21 @@ public class BaseClassTest{
         System.out.println(a.startsWith("a",0));
         System.out.println(a.startsWith("a",1));
 
+        char[] chars1 = a.toCharArray();
 
+        char[] chars2 = new char[2];
+        System.arraycopy(chars1,0,chars2,0,2);
+        System.out.println(chars2);
+
+        // 通过反射的方式修改字符串的值
+        System.out.println("通过反射的方式修改字符串的值");
+        String b1 = "abd";
+        System.out.println(b1);
+
+        Field value = b1.getClass().getDeclaredField("value");
+        value.setAccessible(true);
+        char[] array = (char[]) value.get(b1);
+        array[0] = 'A';
+        System.out.println(b1);
     }
 }
