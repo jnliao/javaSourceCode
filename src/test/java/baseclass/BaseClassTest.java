@@ -200,6 +200,7 @@ public class BaseClassTest{
     }
 
     public static void testString() throws NoSuchFieldException, IllegalAccessException {
+        // hashcode
         String str = "aa";
         int i = str.hashCode();
         int i2 = str.hashCode();
@@ -209,6 +210,7 @@ public class BaseClassTest{
         System.out.println(abc);
         System.out.println(abc.hashCode());
 
+        // equals
         String a="abc";
         String b="abc";
         String c="fbc";
@@ -222,9 +224,11 @@ public class BaseClassTest{
         String a2= new String("abc");
         System.out.println(a.equals(a2));
 
+        // startsWith
         System.out.println(a.startsWith("a",0));
         System.out.println(a.startsWith("a",1));
 
+        // toCharArray
         char[] chars1 = a.toCharArray();
 
         char[] chars2 = new char[2];
@@ -241,5 +245,16 @@ public class BaseClassTest{
         char[] array = (char[]) value.get(b1);
         array[0] = 'A';
         System.out.println(b1);
+
+        // subString  从指定位置（beginIndex）开始，将String的旧数组中指定数量的元素拷贝到新数组中，然后返回String对象
+        // 指定数量: Math.min(value.length - beginIndex, endIndex - beginIndex))，其中value指原字符串的数组值
+        String subString = "abcde";
+        System.out.println(subString.substring(1,2)); // b
+
+        // indexOf
+        subString.indexOf("b");
+
+        // contains
+        subString.contains("b");
     }
 }

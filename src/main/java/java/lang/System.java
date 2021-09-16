@@ -478,10 +478,10 @@ public final class System {
      * arrays have component types that are reference types.)
      *
      * @param      src      the source array.
-     * @param      srcPos   starting position in the source array.
+     * @param      srcPos   starting position in the source array. 原数组开始拷贝的起始位置
      * @param      dest     the destination array.
-     * @param      destPos  starting position in the destination data.
-     * @param      length   the number of array elements to be copied.
+     * @param      destPos  starting position in the destination data. 目标数组中拷贝过来的元素放置的起始位置
+     * @param      length   the number of array elements to be copied.  从原数组中拷贝的元素个数
      * @exception  IndexOutOfBoundsException  if copying would cause
      *               access of data outside array bounds.
      * @exception  ArrayStoreException  if an element in the <code>src</code>

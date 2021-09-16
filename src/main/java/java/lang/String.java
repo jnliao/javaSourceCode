@@ -204,7 +204,7 @@ public final class String
         if (offset > value.length - count) {
             throw new StringIndexOutOfBoundsException(offset + count);
         }
-        this.value = Arrays.copyOfRange(value, offset, offset+count);
+        this.value = Arrays.copyOfRange(value, offset, offset+count); // 最终取的元素个数Math.min(value.length - offset, count));
     }
 
     /**
@@ -1938,7 +1938,7 @@ public final class String
      * substring begins at the specified {@code beginIndex} and
      * extends to the character at index {@code endIndex - 1}.
      * Thus the length of the substring is {@code endIndex-beginIndex}.
-     * <p>
+     * <p>  从指定位置（beginIndex）开始，将String的旧数组中指定数量的元素拷贝到新数组中，然后返回String对象
      * Examples:
      * <blockquote><pre>
      * "hamburger".substring(4, 8) returns "urge"
@@ -1967,7 +1967,7 @@ public final class String
             throw new StringIndexOutOfBoundsException(subLen);
         }
         return ((beginIndex == 0) && (endIndex == value.length)) ? this
-                : new String(value, beginIndex, subLen);
+                : new String(value, beginIndex, subLen); // 最终取的元素个数Math.min(value.length - beginIndex, endIndex - beginIndex));
     }
 
     /**
