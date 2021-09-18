@@ -206,6 +206,7 @@ public class BaseClassTest{
         int i2 = str.hashCode();
 
         char[] chars = new char[]{'a','b','c'};
+//        System.out.println(chars[3]);
         String abc = new String(chars);
         System.out.println(abc);
         System.out.println(abc.hashCode());
@@ -248,13 +249,13 @@ public class BaseClassTest{
 
         // subString  从指定位置（beginIndex）开始，将String的旧数组中指定数量的元素拷贝到新数组中，然后返回String对象
         // 指定数量: Math.min(value.length - beginIndex, endIndex - beginIndex))，其中value指原字符串的数组值
-        String subString = "abcde";
+        String subString = "abc";
         System.out.println(subString.substring(1,2)); // b
 
         // indexOf
-        subString.indexOf("b");
+        System.out.println(subString.indexOf("bcd"));
 
         // contains
-        subString.contains("b");
+        subString.contains("bcd");
     }
 }

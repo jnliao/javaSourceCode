@@ -1742,7 +1742,7 @@ public final class String
      * source is the character array being searched, and the target
      * is the string being searched for.
      *
-     * @param   source       the characters being searched.
+     * @param   source       the characters being searched.  indexOf("abcde", 0, 5,"bcd", 0, 3, 0);
      * @param   sourceOffset offset of the source string.
      * @param   sourceCount  count of the source string.
      * @param   target       the characters being searched for.
@@ -1756,32 +1756,32 @@ public final class String
         if (fromIndex >= sourceCount) {
             return (targetCount == 0 ? sourceCount : -1);
         }
-        if (fromIndex < 0) {
+        if (fromIndex < 0) { // fromIndex = 0
             fromIndex = 0;
         }
-        if (targetCount == 0) {
+        if (targetCount == 0) { // targetCount = 3
             return fromIndex;
         }
 
-        char first = target[targetOffset];
-        int max = sourceOffset + (sourceCount - targetCount);
+        char first = target[targetOffset];  // b
+        int max = sourceOffset + (sourceCount - targetCount); // 0+(5-3)=2
 
-        for (int i = sourceOffset + fromIndex; i <= max; i++) {
+        for (int i = sourceOffset + fromIndex; i <= max; i++) { // i = sourceOffset + fromIndex = 0
             /* Look for first character. */
-            if (source[i] != first) {
-                while (++i <= max && source[i] != first);
+            if (source[i] != first) { // source[0]=a != b
+                while (++i <= max && source[i] != first); // i=1,source[1] =b
             }
 
             /* Found first character, now look at the rest of v2 */
-            if (i <= max) {
-                int j = i + 1;
-                int end = j + targetCount - 1;
-                for (int k = targetOffset + 1; j < end && source[j]
-                        == target[k]; j++, k++);
+            if (i <= max) { // i=1
+                int j = i + 1; // j=2
+                int end = j + targetCount - 1; // end=2+(3-1)=4 ，其中：(targetCount - 1)为待比较的个数
+                for (int k = targetOffset + 1; j < end && source[j]  //source[2]=c, j=3 source[3]=d
+                        == target[k]; j++, k++); // target[1]=c, k=2 target[2]=d
 
-                if (j == end) {
+                if (j == end) { //j=4,end=4
                     /* Found whole string. */
-                    return i - sourceOffset;
+                    return i - sourceOffset; // i=1,sourceOffset=0 =>1
                 }
             }
         }
