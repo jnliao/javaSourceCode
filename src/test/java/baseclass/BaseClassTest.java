@@ -253,9 +253,17 @@ public class BaseClassTest{
         System.out.println(subString.substring(1,2)); // b
 
         // indexOf
+        // 作用：获取目标字符串str1在源字符串str2中第一次出现的索引(下标)位置。
+        //"abcde".indexOf("bcd") ， "abcde"-源字符串；"bcd"-目标字符串。
+
+        // 原理：(1)先获取目标字符串str1的第一个字符在源字符串str2中的索引位置
+        // (2)在上述基础上，依次判断str1剩余字符在str2中是否存在(依次比较单个字符是否相等)，
+        // 且字符之间无间隔(即存在且连续)，从str2的索引位置+1开始判断。
+        // (3)上述判断均通过，则返回字符串str1在指定字符串str2中第一次出现的索引(下标)位置 i
         System.out.println(subString.indexOf("bcd"));
 
         // contains
+        // 原理：判断目标字符串在源字符串中第一次出现的位置是否大于-1
         subString.contains("bcd");
     }
 }

@@ -1773,7 +1773,7 @@ public final class String
             }
 
             /* Found first character, now look at the rest of v2 */
-            if (i <= max) { // i=1
+            if (i <= max) { // i=1  防止 source[j] 索引越界，同时也可提前判断源字符串是否包含目标字符串
                 int j = i + 1; // j=2
                 int end = j + targetCount - 1; // end=2+(3-1)=4 ，其中：(targetCount - 1)为待比较的个数
                 for (int k = targetOffset + 1; j < end && source[j]  //source[2]=c, j=3 source[3]=d
