@@ -4,7 +4,6 @@ import model.HelloService;
 import model.IHello;
 import model.Student;
 
-import javax.xml.transform.Source;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Objects;
@@ -36,7 +35,8 @@ public class BaseClassTest{
         //testMethod();
         //testConstructor();
         //testProxy();
-        testString();
+        //testString();
+        testObjects();
     }
 
     /**
@@ -265,5 +265,16 @@ public class BaseClassTest{
         // contains
         // 原理：判断目标字符串在源字符串中第一次出现的位置是否大于-1
         subString.contains("bcd");
+    }
+
+    public static void testObjects(){
+        System.out.println(Objects.equals("a","b"));
+
+        char[] array1 = {'a','b','c'};
+        char[] array2 = {'a','b','c'};
+        System.out.println(Arrays.equals(array1, array2));
+
+        System.out.println(Objects.equals(array1,array2));
+        System.out.println(Objects.deepEquals(array1,array2));
     }
 }

@@ -2684,17 +2684,17 @@ public class Arrays {
      * @return <tt>true</tt> if the two arrays are equal
      */
     public static boolean equals(byte[] a, byte[] a2) {
-        if (a==a2)
+        if (a==a2) // 比较数组对象首地址值（非基本数据类型）
             return true;
         if (a==null || a2==null)
             return false;
 
         int length = a.length;
-        if (a2.length != length)
+        if (a2.length != length) // 比较数组长度
             return false;
 
-        for (int i=0; i<length; i++)
-            if (a[i] != a2[i])
+        for (int i=0; i<length; i++) // 依次比较数组中的每个元素
+            if (a[i] != a2[i]) // 比较元素的值（基本数据类型）
                 return false;
 
         return true;

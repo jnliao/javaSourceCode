@@ -76,7 +76,7 @@ public final class Objects {
     * @see Arrays#deepEquals(Object[], Object[])
     * @see Objects#equals(Object, Object)
     */
-    public static boolean deepEquals(Object a, Object b) {
+    public static boolean deepEquals(Object a, Object b) { // 比较单个对象和数组对象
         if (a == b)
             return true;
         else if (a == null || b == null)
