@@ -476,12 +476,12 @@ public final class System {
      * (Because of the restrictions already itemized, this
      * paragraph effectively applies only to the situation where both
      * arrays have component types that are reference types.)
-     *
+     * 从源数组(src)指定位置(srcPos)开始拷贝指定数量(length)的元素到目的数组(dest)，并指定目的数组中放置拷贝过来的元素的起始位置(destPos)
      * @param      src      the source array.
-     * @param      srcPos   starting position in the source array. 原数组开始拷贝的起始位置
+     * @param      srcPos   starting position in the source array. 源数组开始拷贝的起始位置
      * @param      dest     the destination array.
-     * @param      destPos  starting position in the destination data. 目标数组中拷贝过来的元素放置的起始位置
-     * @param      length   the number of array elements to be copied.  从原数组中拷贝的元素个数
+     * @param      destPos  starting position in the destination data. 目的数组中放置拷贝过来的元素的起始位置
+     * @param      length   the number of array elements to be copied.  从源数组中拷贝的元素个数
      * @exception  IndexOutOfBoundsException  if copying would cause
      *               access of data outside array bounds.
      * @exception  ArrayStoreException  if an element in the <code>src</code>

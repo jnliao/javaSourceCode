@@ -3203,7 +3203,7 @@ public class Arrays {
      * @throws ArrayStoreException if an element copied from
      *     <tt>original</tt> is not of a runtime type that can be stored in
      *     an array of class <tt>newType</tt>
-     * @since 1.6
+     * @since 1.6  创建容量更大的新数组，将原数组中的元素拷贝到新数组
      */
     public static <T,U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
         @SuppressWarnings("unchecked")

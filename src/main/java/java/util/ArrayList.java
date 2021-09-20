@@ -175,7 +175,7 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws NullPointerException if the specified collection is null
      */
     public ArrayList(Collection<? extends E> c) {
-        elementData = c.toArray();
+        elementData = c.toArray(); // 将目标集合转成数组并赋值给集合的数组变量-elementData
         if ((size = elementData.length) != 0) {
             // c.toArray might (incorrectly) not return Object[] (see 6260652)
             if (elementData.getClass() != Object[].class)
@@ -232,10 +232,10 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     private void ensureExplicitCapacity(int minCapacity) {
-        modCount++;
+        modCount++;  // 集合结构变化次数+1
 
-        // overflow-conscious code
-        if (minCapacity - elementData.length > 0)
+        // overflow-conscious code. minCapacity = 当前集合元素数量+1 或 10（elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA时）
+        if (minCapacity - elementData.length > 0) // 最小应具备的容量（minCapacity）> 当前集合的容量时，进行集合扩容
             grow(minCapacity);
     }
 
@@ -256,13 +256,13 @@ public class ArrayList<E> extends AbstractList<E>
     private void grow(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
-        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        int newCapacity = oldCapacity + (oldCapacity >> 1); // 旧容量的1.5倍（oldCapacity为偶数时）
         if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacity(minCapacity);
+        if (newCapacity - MAX_ARRAY_SIZE > 0) // MAX_ARRAY_SIZE = 2^31-1-8
+            newCapacity = hugeCapacity(minCapacity); // 扩容到 2^31-1 或 2^31-1-8
         // minCapacity is usually close to size, so this is a win:
-        elementData = Arrays.copyOf(elementData, newCapacity);
+        elementData = Arrays.copyOf(elementData, newCapacity); // 通常情况下，会扩容到旧容量的1.5倍
     }
 
     private static int hugeCapacity(int minCapacity) {
@@ -459,8 +459,8 @@ public class ArrayList<E> extends AbstractList<E>
      * @return <tt>true</tt> (as specified by {@link Collection#add})
      */
     public boolean add(E e) {
-        ensureCapacityInternal(size + 1);  // Increments modCount!!
-        elementData[size++] = e;
+        ensureCapacityInternal(size + 1);  // Increments modCount!! 判断是否需要进行集合扩容，如需扩容则扩容
+        elementData[size++] = e; // 将元素追加到数组中现有元素的末端
         return true;
     }
 
@@ -474,11 +474,11 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public void add(int index, E element) {
-        rangeCheckForAdd(index);
+        rangeCheckForAdd(index);// index不能大于现有元素的个数或小于0
 
         ensureCapacityInternal(size + 1);  // Increments modCount!!
         System.arraycopy(elementData, index, elementData, index + 1,
-                         size - index);
+                         size - index); // 将数组中索引位置为index及之后的元素整体后移一位（System.arraycopy）
         elementData[index] = element;
         size++;
     }
@@ -581,7 +581,7 @@ public class ArrayList<E> extends AbstractList<E>
         Object[] a = c.toArray();
         int numNew = a.length;
         ensureCapacityInternal(size + numNew);  // Increments modCount
-        System.arraycopy(a, 0, elementData, size, numNew);
+        System.arraycopy(a, 0, elementData, size, numNew);// 将元素拷贝到数组末端
         size += numNew;
         return numNew != 0;
     }

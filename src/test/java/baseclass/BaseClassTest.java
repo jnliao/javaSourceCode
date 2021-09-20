@@ -10,6 +10,7 @@ import java.util.Objects;
 
 /**
  * @author jinneng.liao
+ * 基础类
  */
 public class BaseClassTest{
     private String name;
