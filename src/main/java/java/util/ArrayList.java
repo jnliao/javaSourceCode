@@ -311,9 +311,9 @@ public class ArrayList<E> extends AbstractList<E>
      * <tt>(o==null&nbsp;?&nbsp;get(i)==null&nbsp;:&nbsp;o.equals(get(i)))</tt>,
      * or -1 if there is no such index.
      */
-    public int indexOf(Object o) {
+    public int indexOf(Object o) { // 获取元素在集合中的位置
         if (o == null) {
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++) // 遍历数组，如果元素相等，则返回索引位置
                 if (elementData[i]==null)
                     return i;
         } else {
@@ -493,18 +493,18 @@ public class ArrayList<E> extends AbstractList<E>
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E remove(int index) {
-        rangeCheck(index);
+        rangeCheck(index); // （1）校验是否索引越界
 
         modCount++;
-        E oldValue = elementData(index);
+        E oldValue = elementData(index); // （2）获取指定位置的元素
 
         int numMoved = size - index - 1;
-        if (numMoved > 0)
+        if (numMoved > 0) // （3）判断要删除的元素是否为位置在最后的一个元素，不是则将该元素之后的所有元素拷贝到该元素所在位置及之后（类似于元素前移1位，但此时最后一个位置仍有值）
             System.arraycopy(elementData, index+1, elementData, index,
                              numMoved);
-        elementData[--size] = null; // clear to let GC do its work
+        elementData[--size] = null; // clear to let GC do its work 。（4）删除最后一个位置的元素
 
-        return oldValue;
+        return oldValue; // (5) 返回指定位置的元素（被删除的元素）
     }
 
     /**
@@ -522,9 +522,9 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public boolean remove(Object o) {
         if (o == null) {
-            for (int index = 0; index < size; index++)
+            for (int index = 0; index < size; index++) // （1）遍历集合的数组，找到待删除元素的位置
                 if (elementData[index] == null) {
-                    fastRemove(index);
+                    fastRemove(index); // （2）删除指定位置的元素（只比 remove(index i) 少一个校验是否索引越界）
                     return true;
                 }
         } else {
@@ -720,21 +720,21 @@ public class ArrayList<E> extends AbstractList<E>
         int r = 0, w = 0;
         boolean modified = false;
         try {
-            for (; r < size; r++)
-                if (c.contains(elementData[r]) == complement)
-                    elementData[w++] = elementData[r];
+            for (; r < size; r++) // 不需要额外的空间，只需要在原有的数组上操作就可以了
+                if (c.contains(elementData[r]) == complement) // removeAll时，遍历数组，将不在指定集合中的元素放置在原集合中（放置位置从集合第一个位置开始）
+                    elementData[w++] = elementData[r]; // 取集合的交集时，遍历数组，将在指定集合中的元素放置在原集合中（放置位置从集合第一个位置开始）
         } finally {
             // Preserve behavioral compatibility with AbstractCollection,
-            // even if c.contains() throws.
+            // even if c.contains() throws.  正常来说r最后是等于size的，除非c.contains()抛出了异常.如果c.contains()抛出了异常，则把未读的元素都拷贝到写指针之后
             if (r != size) {
                 System.arraycopy(elementData, r,
                                  elementData, w,
                                  size - r);
                 w += size - r;
             }
-            if (w != size) {
+            if (w != size) { // removeAll时，判断集合中的所有元素是否都不在指定集合中（放置的元素数量是否等于原集合的元素数量size），如果为是,则不做其他操作。如果不是，则将集合中剩余位置的元素依次删除
                 // clear to let GC do its work
-                for (int i = w; i < size; i++)
+                for (int i = w; i < size; i++) // 取集合的交集时，判断集合中的所有元素是否都在指定集合中，如果为是,则不做其他操作。如果不是，则将集合中剩余位置的元素依次删除
                     elementData[i] = null;
                 modCount += size - w;
                 size = w;

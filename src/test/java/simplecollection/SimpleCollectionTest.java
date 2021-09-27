@@ -10,7 +10,9 @@ import java.util.Collection;
 public class SimpleCollectionTest {
 
     public static void main(String[] args) {
-        testArrayList();
+        //testArrayList();
+
+        testGetAndRemove();
     }
 
     public static void testArrayList(){
@@ -51,6 +53,10 @@ public class SimpleCollectionTest {
         // addAll(Collection c)方法
         ArrayList<String> strList5 = new ArrayList<>(6);
         strList5.add("a");
+        strList5.add("b");
+        strList5.add("c");
+        strList5.add("e");
+
         ArrayList<String> strList6 = new ArrayList<>(6);
         strList6.add("a");
         strList6.add("b");
@@ -58,6 +64,15 @@ public class SimpleCollectionTest {
         strList5.addAll(strList6);
         System.out.println(strList5);
 
+        String s = strList5.get(0);
+        strList5.remove(0);
+        strList5.remove("b");
+
+        ArrayList<String> objects = new ArrayList<>(2);
+        objects.add("c");
+        objects.add("d");
+
+        strList5.removeAll(objects);
     }
 
     static class MyList extends ArrayList<String>{
@@ -90,6 +105,29 @@ public class SimpleCollectionTest {
 //        strArray[++i] = "w";
 //        strArray[++i] = "e";
         System.out.println(i);
+    }
+
+    public static void testGetAndRemove(){
+        ArrayList<String> strList5 = new ArrayList<>(6);
+        strList5.add("a");
+        strList5.add("b");
+        strList5.add("c");
+        strList5.add("e");
+
+        String s = strList5.get(0);
+        strList5.remove(0);
+        strList5.remove("b");
+
+        ArrayList<String> objects = new ArrayList<>(2);
+        objects.add("c");
+        objects.add("e");
+
+        strList5.removeAll(objects);
+
+        boolean a = strList5.contains("a");
+
+        // 求两个集合的交集
+        strList5.retainAll(objects);
     }
 
 
